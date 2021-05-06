@@ -43,3 +43,54 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
 
 user_redirect_view = UserRedirectView.as_view()
+
+
+class ListProductsView(generics.ListCreateAPIView):
+    """
+    Get all the products
+    """
+    queryset = Product.objects.all()
+    serializer_class = ShowProductSerializer
+
+  
+
+    def post(self, request, *args, **kwargs):
+        serializer = CreateProductSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+list_products_view = ListProductsView.as_view()
+
+
+class ListSpecificProduct(generics.ListAPIView):
+    """
+    Get a specific product
+    """
+    serializer_class = ShowProductSerializer
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the 
+                """
+        id = self.kwargs['id']
+        return Product.objects.filter(id=id)
+
+class ListProductSales(generics.ListCreateAPIView):
+    """
+    Get all the product sales
+    """
+    queryset = Sales.objects.all()
+    serializer_class = ShowProductSerializer
+
+  
+
+    def post(self, request, *args, **kwargs):
+        serializer = CreateProductSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+list_products_sales = ListProductSales.as_view()

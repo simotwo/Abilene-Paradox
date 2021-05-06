@@ -20,3 +20,32 @@ class User(AbstractUser):
 
         """
         return reverse("users:detail", kwargs={"username": self.username})
+
+
+class Product(models.Model):
+    # id = models.CharField(max_length=10, unique=True, primary_key=True)
+    name = models.CharField(max_length=250)
+    category_id = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    product_id = models.CharField(max_length=50, blank=True)
+
+    def __str__(self):
+        return "{} - {}".format(self.name, self.product_id, self.category_id)
+
+
+class Store(models.Model):
+    name = models.CharField(max_length=50, blanks=True)
+    store_id = models.CharField(max_length=50, unique=True)
+    owner_id = models.CharField(max_length=50, blank=True)
+
+    def __str__(self):
+        return "{} - {}".format(self.name, self.store_id, self.owner_id)
+
+
+
+class Sales(models.Model):
+    product_id = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    store_id = models.CharField(max_length=50, blank=True)
+    units_sold = models.CharField(max_length=50, blank=True)
+
+    def __str__(self):
+        return "{} || {}".format(self.store_id, self.units_sold)
