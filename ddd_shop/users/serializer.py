@@ -20,3 +20,10 @@ class CreateProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ("name", "category_id", "product_id")
         fields = '__all__'
+
+
+class CreateStoreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Store
+        fields = ("name", "store_id", "owner_id")
+        fields = '__all__'
